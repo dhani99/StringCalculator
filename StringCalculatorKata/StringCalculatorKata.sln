@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringCalculatorKata", "StringCalculatorKata\StringCalculatorKata.csproj", "{B1CC6D59-31D0-4338-80A9-7121C81ACE3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringCalculatorTests", "StringCalculatorTests\StringCalculatorTests.csproj", "{367252C8-18F8-4E72-8D8A-0FE78CED7765}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{B1CC6D59-31D0-4338-80A9-7121C81ACE3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1CC6D59-31D0-4338-80A9-7121C81ACE3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1CC6D59-31D0-4338-80A9-7121C81ACE3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{367252C8-18F8-4E72-8D8A-0FE78CED7765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{367252C8-18F8-4E72-8D8A-0FE78CED7765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{367252C8-18F8-4E72-8D8A-0FE78CED7765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{367252C8-18F8-4E72-8D8A-0FE78CED7765}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
