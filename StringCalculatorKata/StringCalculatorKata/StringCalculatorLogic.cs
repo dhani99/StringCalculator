@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StringCalculatorKata
 {
@@ -15,10 +17,17 @@ namespace StringCalculatorKata
                 var aStringAsNumber = int.Parse(aString);
                 return aStringAsNumber;
             }
+
+            //var subString = aString.Substring(3);
             
-            var stringArray = aString.Split(",");
+            //var stringList = subString.Split(new char[] { ',','\n',';' }).ToList();
+            var stringList = aString.Split(new string[] { ',','\n','//' }).ToList();
+            
+            
+            
+         
             var total = 0; 
-            foreach (var number in stringArray)
+            foreach (var number in stringList)
             {
                 total += int.Parse(number);
 

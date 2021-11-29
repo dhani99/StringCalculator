@@ -7,7 +7,7 @@ namespace StringCalculatorTests
     public class UnitTest1
     {
         [Fact]
-        public void CanReturnAZeroWhenGivenAnEmptyString()
+        public void EmptyStringReturns0()
         {
             //arrange 
             var aString = "";
@@ -20,7 +20,7 @@ namespace StringCalculatorTests
         }
         
         [Fact]
-        public void CanTakeStringAndReturnANumber()
+        public void SingleStringReturnsANumber()
         {
             //arrange 
             var aString = "1";
@@ -42,23 +42,44 @@ namespace StringCalculatorTests
             //assert
             Assert.Equal(3, result);
         }
-        [Fact]
-        public void CanTake2NumbersAndAddThemTogether()
-        {
-            //arrange 
-            var aString = "1,2";
-            var stringCalculatorLogic = new StringCalculatorLogic();
-            //act
-            var result = stringCalculatorLogic.Add(aString);
-            //assert
-            Assert.Equal(3, result);
-        }
-
+        
         [Theory]
         [InlineData ("3,5",8)]
         [InlineData ("1,2",3)]
         [InlineData ("7,2",9)]
-        public void CanAdd2NumbersFromAString(string input, int expected)
+        [InlineData ("1,2,3",6)]
+        [InlineData ("3,5,3,9",20)]
+        public void MultipleStringsReturnsTheSum(string input, int expected)
+        {
+            //arrange 
+            var stringCalculatorLogic = new StringCalculatorLogic();
+            //act
+            var result = stringCalculatorLogic.Add(input);
+            //assert 
+            Assert.Equal(expected, result);
+            
+        }
+        [Theory]
+        [InlineData ("1,2\n3",6)]
+        [InlineData ("3\n5\n3,9",20)]
+
+
+        public void StringsSeperatedByNewLineAndCommaReturnsTheSum(string input, int expected)
+        {
+            //arrange 
+            var stringCalculatorLogic = new StringCalculatorLogic();
+            //act
+            var result = stringCalculatorLogic.Add(input);
+            //assert 
+            Assert.Equal(expected, result);
+            
+        }
+        [Theory]
+        [InlineData ("//;\n1;2",3)]
+        //[InlineData ("3\n5\n3,9",20)]
+
+
+        public void StringsSeperatedByDifferentCharactersReturnsTheSum(string input, int expected)
         {
             //arrange 
             var stringCalculatorLogic = new StringCalculatorLogic();
@@ -69,7 +90,17 @@ namespace StringCalculatorTests
             
         }
         
+        
+        
+        
+        
     }
     
 }
+
+//4 rules of simple design 
+//
+//
+// 3. no duplication 
+// 4. fewest elements 
     
