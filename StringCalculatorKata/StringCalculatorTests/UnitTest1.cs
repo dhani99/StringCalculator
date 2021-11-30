@@ -75,7 +75,9 @@ namespace StringCalculatorTests
             
         }
         [Theory]
-        [InlineData ("//;\n1;2",3)]
+        [InlineData ("//;\n1;2",3)] 
+        //[InlineData ("//;\n1;2",3)]
+        
         //[InlineData ("3\n5\n3,9",20)]
 
 
