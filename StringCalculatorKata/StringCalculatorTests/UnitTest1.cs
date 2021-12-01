@@ -92,12 +92,25 @@ namespace StringCalculatorTests
             
         }
         
+        [Fact]
+        public void ThrowExceptionIfStringContainsNegativeNumber()
+        {
+            //arrange 
+            var aString = "-1,2,-3";
+            var stringCalculatorLogic = new StringCalculatorLogic();
+            //act
+            var exception = Assert.Throws<NegativeNumbersException>(() => stringCalculatorLogic.Add(aString));
+            
+            //assert
+            Assert.Equal("Negatives not allowed: -1, -3", exception.Message);
+        }
+        
         
         
         
         
     }
-    
+
 }
 
 //4 rules of simple design 

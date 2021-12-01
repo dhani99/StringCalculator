@@ -10,7 +10,6 @@ namespace StringCalculatorKata
 
         public int Add(string aString)
         {
-            //checking for empty string and returning 0 
             if (IsEmptyString(aString))
             {
                 return 0;
@@ -18,48 +17,30 @@ namespace StringCalculatorKata
             if (IsSingleNumber(aString))
             {
                 return int.Parse(aString) ; 
+            } 
+            var listOfNumbersAsStrings = SplitStringWithDelimiter(aString); 
+            bool isPresent = AreCharactersPresent(aString);
+            
+            var indexOfNewLine = FindIndexOfNewLine(aString);
+            var indexOfSlash = FindIndexOfSLash(aString); 
+            if (CheckingDistanceBetweenNewlineAndSlash(indexOfNewLine,indexOfSlash)) 
+            { 
+                var subString = CreatingASubstring(aString, indexOfNewLine); 
+                listOfNumbersAsStrings = SplittingTheSubstringWithDelimiter(subString, aString, indexOfNewLine, listOfNumbersAsStrings);
             }
 
-            //var stringList = aString.Split(Delimiters).ToList();
-            var listOfNumbersAsStrings = SplitStringWithDelimiter(aString);
-//checking if the characters are present. - return true 
-           // bool newlineCharacter = aString.Contains('\n');
-           //bool slashCharacter = aString.Contains("//");
-           bool isPresent = AreCharactersPresent(aString);
+            CheckForNegatives(listOfNumbersAsStrings);
 
-            //if (newlineCharacter && slashCharacter)
-            {// another method to find the index of the two
-                var indexOfNewLine = FindIndexOfNewLine(aString);
-                var indexOfSlash = FindIndexOfSLash(aString);
-               
-               
-                if (CheckingDistanceBetweenNewlineAndSlash(indexOfNewLine,indexOfSlash))//boolean method for testing the condition
-                {
-                    var subString = CreatingASubstring(aString, indexOfNewLine);
-                    listOfNumbersAsStrings =
-                        SplittingTheSubstringWithDelimiter(subString, aString, indexOfNewLine, listOfNumbersAsStrings);
-                }
-            }
+            return AddStringNumbersTogether(listOfNumbersAsStrings);
+        }
 
-
-           /* if (aString.StartsWith("//"))
+        public void CheckForNegatives(List<string>? listOfNumbersAsStrings)
+        {
+            if (StringHasNegativeNumbers(listOfNumbersAsStrings))
             {
-                
-                var subString = aString.Substring(4);
-            
-                 stringList = subString.Split(new char[] { ',','\n',';' }).ToList();
-                
-            }*/
-            
-            
-            var total = 0; 
-            foreach (var number in listOfNumbersAsStrings)
-            {
-                total += int.Parse(number);
-
+                var negativeNumbers = GetNegativeNumbers(listOfNumbersAsStrings);
+                throw new NegativeNumbersException("Negatives not allowed: " + String.Join(", ", negativeNumbers));
             }
-            return total; 
-            
         }
 
         public bool IsEmptyString(string aString)
@@ -104,14 +85,51 @@ namespace StringCalculatorKata
             return aString.Substring(newLineIndex+1);
             
         }
-
         public List<string> SplittingTheSubstringWithDelimiter(string subString, string aString, int newLineIndex, List<string> listOfNumbersAsStrings )
         {
             var delimiter = aString[newLineIndex - 1];
             listOfNumbersAsStrings = subString.Split(delimiter).ToList();
             return listOfNumbersAsStrings;
+        }
+        public int AddStringNumbersTogether(List<string> listOfNumbersAsStrings)
+        {
+            var total = 0; 
+            foreach (var number in listOfNumbersAsStrings)
+            {
+                total += int.Parse(number);
 
+            }
+            return total; 
+        }
+
+        public bool StringHasNegativeNumbers(List<string> listOfNumbersAsStrings)
+        {
+            foreach (var number in listOfNumbersAsStrings)
+            {
+                if (int.Parse(number) < 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public List<string> GetNegativeNumbers(List<string> listOfNumbersAsString)
+        {
+            List<string> negativeNumbers = new List<string>();
+            foreach (var number in listOfNumbersAsString)
+            {
+                if (number.Contains("-"))
+                {
+                    negativeNumbers.Add(number);
+                }
+            }
+            return negativeNumbers;
 
         }
+        
+
     }
+
+    
 }
