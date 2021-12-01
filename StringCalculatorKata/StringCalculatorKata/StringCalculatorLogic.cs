@@ -23,18 +23,21 @@ namespace StringCalculatorKata
             //var stringList = aString.Split(Delimiters).ToList();
             var listOfNumbersAsStrings = SplitStringWithDelimiter(aString);
 //checking if the characters are present. - return true 
-            bool newlineCharacter = aString.Contains('\n');
-            bool slashCharacter = aString.Contains("//");
+           // bool newlineCharacter = aString.Contains('\n');
+           //bool slashCharacter = aString.Contains("//");
+           bool isPresent = AreCharactersPresent(aString);
 
-            if (newlineCharacter && slashCharacter)
+            //if (newlineCharacter && slashCharacter)
             {// another method to find the index of the two
-                var indexOfNewLine = aString.IndexOf('\n');
-                var indexOfSlash = aString.IndexOf("//");
-                if (indexOfSlash == indexOfNewLine - 3)//boolean method for testing the condition
+                var indexOfNewLine = FindIndexOfNewLine(aString);
+                var indexOfSlash = FindIndexOfSLash(aString);
+               
+               
+                if (CheckingDistanceBetweenNewlineAndSlash(indexOfNewLine,indexOfSlash))//boolean method for testing the condition
                 {
-                    var subString = aString.Substring(indexOfNewLine+1);
-                    var seperator = aString[indexOfNewLine - 1];
-                    listOfNumbersAsStrings = subString.Split(seperator).ToList();
+                    var subString = CreatingASubstring(aString, indexOfNewLine);
+                    listOfNumbersAsStrings =
+                        SplittingTheSubstringWithDelimiter(subString, aString, indexOfNewLine, listOfNumbersAsStrings);
                 }
             }
 
@@ -74,9 +77,41 @@ namespace StringCalculatorKata
             return aString.Split(Delimiters).ToList();
         }
 
-        /*public char FindDelimiter(string aString)
+        public bool AreCharactersPresent(string aString)
         {
+            bool newlineCharacter = aString.Contains('\n');
+            bool slashCharacter = aString.Contains("//");
+            return newlineCharacter && slashCharacter;
+        }
+
+        public int FindIndexOfNewLine(string aString)
+        {
+            return  aString.IndexOf('\n');
+        }
+
+        public int FindIndexOfSLash(string aString)
+        {
+            return aString.IndexOf("//");
+        }
+
+        public bool CheckingDistanceBetweenNewlineAndSlash(int newLineIndex, int slashIndex)
+        {
+            return slashIndex == newLineIndex - 3;
+        }
+
+        public string CreatingASubstring(string aString, int newLineIndex)
+        {
+            return aString.Substring(newLineIndex+1);
             
-        }*/
+        }
+
+        public List<string> SplittingTheSubstringWithDelimiter(string subString, string aString, int newLineIndex, List<string> listOfNumbersAsStrings )
+        {
+            var delimiter = aString[newLineIndex - 1];
+            listOfNumbersAsStrings = subString.Split(delimiter).ToList();
+            return listOfNumbersAsStrings;
+
+
+        }
     }
 }
