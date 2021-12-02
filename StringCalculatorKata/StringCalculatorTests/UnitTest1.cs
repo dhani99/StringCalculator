@@ -104,6 +104,40 @@ namespace StringCalculatorTests
             //assert
             Assert.Equal("Negatives not allowed: -1, -3", exception.Message);
         }
+        [Fact]
+        public void CheckingNumbersGreaterThan1000AreIgnored()
+        {
+            //arrange 
+            var aString = "1000,1001,2";
+            var stringCalculatorLogic = new StringCalculatorLogic();
+            //act
+            var result = stringCalculatorLogic.Add(aString);
+            //assert
+            Assert.Equal(2, result);
+        }
+        
+        [Fact]
+        public void AcceptingDelimitersOfAnyLength()
+        {
+            //arrange 
+            var aString = "//[***]\n1***2***3";
+            var stringCalculatorLogic = new StringCalculatorLogic();
+            //act
+            var result = stringCalculatorLogic.Add(aString);
+            //assert
+            Assert.Equal(6, result);
+        }
+        [Fact]
+        public void AcceptingMultipleDelimitersOfSameLength()
+        {
+            //arrange 
+            var aString = "//[*][%]\n1*2%3";
+            var stringCalculatorLogic = new StringCalculatorLogic();
+            //act
+            var result = stringCalculatorLogic.Add(aString);
+            //assert
+            Assert.Equal(6, result);
+        }
         
         
         

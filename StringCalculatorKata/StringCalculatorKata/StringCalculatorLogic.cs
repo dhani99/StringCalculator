@@ -6,10 +6,11 @@ namespace StringCalculatorKata
 {
     public class StringCalculatorLogic
     {
-        public char[] Delimiters = new char[] {',', '\n', ';'};
+        public List<string> Delimiters = new(){",","\n",";"};
 
         public int Add(string aString)
         {
+            
             if (IsEmptyString(aString))
             {
                 return 0;
@@ -17,21 +18,74 @@ namespace StringCalculatorKata
             if (IsSingleNumber(aString))
             {
                 return int.Parse(aString) ; 
-            } 
-            var listOfNumbersAsStrings = SplitStringWithDelimiter(aString); 
-            bool isPresent = AreCharactersPresent(aString);
-            
-            var indexOfNewLine = FindIndexOfNewLine(aString);
-            var indexOfSlash = FindIndexOfSLash(aString); 
-            if (CheckingDistanceBetweenNewlineAndSlash(indexOfNewLine,indexOfSlash)) 
-            { 
-                var subString = CreatingASubstring(aString, indexOfNewLine); 
-                listOfNumbersAsStrings = SplittingTheSubstringWithDelimiter(subString, aString, indexOfNewLine, listOfNumbersAsStrings);
             }
 
+            if (CheckForTwoBrackets(aString))
+            {
+                
+                var indexOfBrackets = FindIndexOfLastBrackets(aString);
+                AddingDelimiter(aString,indexOfBrackets);
+                
+            }
+            
+           
+           
+            if (StringHasCustomDelimiter(aString))
+            {
+                var indexOfBrackets = FindIndexOfBrackets(aString);
+                AddingDelimiter(aString, indexOfBrackets);
+            }
+
+            var stringOfNumbersAndDelimiters = CreateSubstring(aString);
+            
+            var listOfNumbersAsStrings = SplitStringWithDelimiter(stringOfNumbersAndDelimiters);
+            
+            
             CheckForNegatives(listOfNumbersAsStrings);
 
             return AddStringNumbersTogether(listOfNumbersAsStrings);
+        }
+
+        public bool CheckForTwoBrackets(string aString)
+        {
+            bool twoLeftBracket = aString.Count(str => str == '[') == 2;
+            bool twoRightBracket = aString.Count(str => str == '[') == 2;
+            return twoLeftBracket && twoRightBracket;
+        }
+
+        public List<int> FindIndexOfLastBrackets(string aString)
+        {
+            var indexOfLeftBracket = FindIndexOfLastLeftBracket(aString);
+            var indexOfRightBracket = FindIndexOfLastRightBracket(aString);
+            List<int> listOfIndex = new List<int>() {indexOfLeftBracket, indexOfRightBracket};
+            return listOfIndex;
+            
+        }
+
+        public int FindIndexOfLastLeftBracket(string aString)
+        {
+            return aString.LastIndexOf("[");
+        } 
+        public int FindIndexOfLastRightBracket(string aString)
+        {
+            return aString.LastIndexOf("]");
+        }
+        
+        private void AddingDelimiter(string aString, List<int> indexOfBrackets)
+        {
+           
+            var delimiterLength = CalculatingDelimiterLength(indexOfBrackets[0], indexOfBrackets[1]);
+            var delimiter = FindDelimiter(aString, indexOfBrackets[0], delimiterLength);
+            Delimiters.Add(delimiter);
+        }
+
+        private List<int> FindIndexOfBrackets(string aString)
+        {
+            var indexOfLeftBracket = FindIndexOfLeftBracket(aString);
+            var indexOfRightBracket = FindIndexOfRightBracket(aString);
+            List<int> listOfIndex = new List<int>() {indexOfLeftBracket, indexOfRightBracket};
+            return listOfIndex;
+
         }
 
         public void CheckForNegatives(List<string>? listOfNumbersAsStrings)
@@ -55,49 +109,20 @@ namespace StringCalculatorKata
 
         public List<string> SplitStringWithDelimiter(string aString)
         {
-            return aString.Split(Delimiters).ToList();
-        }
-
-        public bool AreCharactersPresent(string aString)
-        {
-            bool newlineCharacter = aString.Contains('\n');
-            bool slashCharacter = aString.Contains("//");
-            return newlineCharacter && slashCharacter;
-        }
-
-        public int FindIndexOfNewLine(string aString)
-        {
-            return  aString.IndexOf('\n');
-        }
-
-        public int FindIndexOfSLash(string aString)
-        {
-            return aString.IndexOf("//");
-        }
-
-        public bool CheckingDistanceBetweenNewlineAndSlash(int newLineIndex, int slashIndex)
-        {
-            return slashIndex == newLineIndex - 3;
-        }
-
-        public string CreatingASubstring(string aString, int newLineIndex)
-        {
-            return aString.Substring(newLineIndex+1);
+            var delimitersAsArray = Delimiters.ToArray();
+            return aString.Split(delimitersAsArray, StringSplitOptions.None).ToList();
             
         }
-        public List<string> SplittingTheSubstringWithDelimiter(string subString, string aString, int newLineIndex, List<string> listOfNumbersAsStrings )
-        {
-            var delimiter = aString[newLineIndex - 1];
-            listOfNumbersAsStrings = subString.Split(delimiter).ToList();
-            return listOfNumbersAsStrings;
-        }
+        
         public int AddStringNumbersTogether(List<string> listOfNumbersAsStrings)
         {
             var total = 0; 
             foreach (var number in listOfNumbersAsStrings)
             {
-                total += int.Parse(number);
-
+                if (int.Parse(number) < 1000)
+                { 
+                    total += int.Parse(number);
+                }
             }
             return total; 
         }
@@ -127,9 +152,43 @@ namespace StringCalculatorKata
             return negativeNumbers;
 
         }
-        
-
-    }
-
+        public bool StringHasCustomDelimiter(string aString)
+        {
+            return aString.Contains("[");
     
+        }
+        
+        public int FindIndexOfLeftBracket(string aString)
+        {
+            return aString.IndexOf("[");
+        }
+
+        public int FindIndexOfRightBracket(string aString)
+        {
+            return aString.IndexOf("]");
+        }
+
+        public int CalculatingDelimiterLength(int indexOfLeftBracket, int indexOfRightBracket)
+        {
+            return indexOfRightBracket - (indexOfLeftBracket + 1);
+        }
+
+        public string CreateSubstring(string aString)
+        {
+            if (aString.StartsWith("//"))
+            {
+                return aString.Substring(aString.IndexOf("\n") + 1);
+            }
+
+            return aString;
+
+        }
+        public string FindDelimiter(string aString, int indexOfLeftBracket, int delimiterLength)
+        {
+            return aString.Substring(indexOfLeftBracket+1, delimiterLength);
+        }
+        
+    }
+   
+
 }
