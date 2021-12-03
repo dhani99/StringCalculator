@@ -23,8 +23,8 @@ namespace StringCalculatorKata
             if (CheckForTwoBrackets(aString))
             {
                 
-                var indexOfBrackets = FindIndexOfLastBrackets(aString);
-                AddingDelimiter(aString,indexOfBrackets);
+                
+                AddingDelimiter(aString);
                 
             }
             
@@ -32,8 +32,8 @@ namespace StringCalculatorKata
            
             if (StringHasCustomDelimiter(aString))
             {
-                var indexOfBrackets = FindIndexOfBrackets(aString);
-                AddingDelimiter(aString, indexOfBrackets);
+                
+                AddingDelimiter(aString);
             }
 
             var stringOfNumbersAndDelimiters = CreateSubstring(aString);
@@ -71,12 +71,32 @@ namespace StringCalculatorKata
             return aString.LastIndexOf("]");
         }
         
-        private void AddingDelimiter(string aString, List<int> indexOfBrackets)
+        private void AddingDelimiter(string aString)
         {
            
-            var delimiterLength = CalculatingDelimiterLength(indexOfBrackets[0], indexOfBrackets[1]);
-            var delimiter = FindDelimiter(aString, indexOfBrackets[0], delimiterLength);
-            Delimiters.Add(delimiter);
+            
+           
+            //start while loop
+            //find the first bracket 
+            //calculate the length 
+            //find what is inside the brackets
+            //add what is inside the brackets into the delimiter list
+            //delete everything upto the closing bracket in the string
+            //while loop will end here
+            //repeat
+
+            var substringWithoutBrackets = aString;
+
+            while (substringWithoutBrackets.Contains('['))
+            {
+                var listofIndex = FindIndexOfBrackets(substringWithoutBrackets);
+                var delimiterLength = CalculatingDelimiterLength(listofIndex[0], listofIndex[1]);
+                var delimiter = FindDelimiter(substringWithoutBrackets, listofIndex[0], delimiterLength);
+                Delimiters.Add(delimiter);
+                substringWithoutBrackets = substringWithoutBrackets.Substring(listofIndex[1]+1);//problem here
+                
+            }
+            
         }
 
         private List<int> FindIndexOfBrackets(string aString)

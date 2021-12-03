@@ -138,6 +138,28 @@ namespace StringCalculatorTests
             //assert
             Assert.Equal(6, result);
         }
+        [Fact]
+        public void AcceptingMultipleDelimitersOfDifferentLength()
+        {
+            //arrange 
+            var aString = "//[***][#][%]\n1***2#3%4";
+            var stringCalculatorLogic = new StringCalculatorLogic();
+            //act
+            var result = stringCalculatorLogic.Add(aString);
+            //assert
+            Assert.Equal(10, result);
+        }
+        [Fact]
+        public void AcceptingDelimitersThatContainNumbers()
+        {
+            //arrange 
+            var aString = "//[*1*][%]\n1*1*2%3";
+            var stringCalculatorLogic = new StringCalculatorLogic();
+            //act
+            var result = stringCalculatorLogic.Add(aString);
+            //assert
+            Assert.Equal(6, result);
+        }
         
         
         
